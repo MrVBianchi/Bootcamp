@@ -111,7 +111,7 @@ if (botonComprobar && botonComprobar instanceof HTMLButtonElement) {
 let puntuacion = 0;
 let carta = "";
 // esta es la funcion que identifica el div de la puntuacion y lo representa
-const muestraPuntuacion = () => {
+const muestraPuntuacion = (puntuacion: number) => {
   const elementoPuntuacion = document.getElementById("puntuacion");
   if (elementoPuntuacion) {
     elementoPuntuacion.innerHTML = puntuacion.toString();
@@ -122,10 +122,10 @@ const muestraPuntuacion = () => {
 // amos a escribir la funcion para cuando el usuario pide carta
 const dameCarta = () => {
   const generaCarta = Math.floor(Math.random() * 11);
-  if (generaCarta && generaCarta >= 7) {
+  if (generaCarta && generaCarta > 7) {
     return generaCarta + 2;
   }
-  console.log(dameCarta);
+
   return generaCarta;
 };
 
@@ -183,22 +183,21 @@ const ValorCarta = (carta: number): number => {
     return carta;
   }
 };
-const sumaPuntuacion = (ValorCarta: number) => {
+const sumaPuntuacion = (ValorCarta: number): number => {
   return (puntuacion = puntuacion + ValorCarta);
 };
-/*
 //funcion que convoque todas las funciones individuales
 const sumaCarta = () => {
   // primero pedimos carta
-  dameCarta();
-  // luego que asigne un caso al nª generado
-  mostrarCarta = (carta: number): string ;
+  const numerocarta = dameCarta();
   //pedimos que cambie la src
-  cambiarScr = (carta: number);
+  cambiarScr(numerocarta);
   //ahora debe sumar los valores
-  sumaPuntuacion = (ValorCarta: number)
+  const ValordeCarta = ValorCarta(numerocarta);
+  sumaPuntuacion(ValordeCarta);
+  muestraPuntuacion(puntuacion);
+  gestionarGameOver(puntuacion);
 };
-*/
 
 // aqui vamos a hacer el apartado 4 y 5 al mismo tiempo para mostrar mensajes y posibles situaicones
 const Menor_Cuatro = 0;
@@ -218,7 +217,7 @@ type Estado =
 const HasSuperadoPuntuacion = (): boolean =>
   puntuacion > GAME_OVER_MAXIMO_INTENTOS;
 
-const muestraMensajeComprobacion = (texto: string, estado: Estado) => {
+const muestraMensajeComprobacion = (estado: Estado) => {
   let mensaje = "";
   switch (estado) {
     case "Menor_Cuatro":
@@ -247,48 +246,48 @@ const muestraMensajeComprobacion = (texto: string, estado: Estado) => {
 };
 // gestionamos boton game over con el boton dame carta
 const gestionarGameOver = (puntuacion: number) => {
-  if (puntuacion >= 7.5) {
+  if (puntuacion > 7.5) {
     const elementodameCarta = document.getElementById("dameCarta");
     if (elementodameCarta && elementodameCarta instanceof HTMLButtonElement) {
       elementodameCarta.disabled = true;
     }
+    muestraMensajeComprobacion("GAME_OVER_MAXIMO_INTENTOS");
   }
 };
 //mesajes comprobacion
 const comprobarPuntuacion = () => {
-  const Numero = puntuacion;
+  const numero = puntuacion;
 
-  if (Numero < 4) {
+  if (numero < 4) {
     return Menor_Cuatro;
   }
-  if (Numero === 5) {
+  if (numero === 5) {
     return Num_cinco;
   }
-  if (Numero === 6) {
+  if (numero === 6) {
     return Seis_siete;
   }
-  if (Numero === 7) {
+  if (numero === 7) {
     return Seis_siete;
   }
-  if (Numero === 7.5) {
+  if (numero === 7.5) {
     return Siete_media;
   }
 };
+const muestraMensajeMePlanto = () => {
+  const mensajePlantarse = document.getElementById("resultado");
+  const estado = comprobarPuntuacion(mensajePlantarse);
+  muestraMensajeComprobacion(estado);
+};
 //funcion reset juego
 const ResetGame = () => {
-puntuacion = 0;
-}
+  puntuacion = 0;
+};
 
 //boton dame carta llama a funcion
 const botonDameCarta = document.getElementById("dameCarta");
 if (botonDameCarta && botonDameCarta instanceof HTMLButtonElement) {
-  botonDameCarta.addEventListener("click", () => {});
-}
-// boton resultado para mostrar carta
-//esto no es un boton es un div que muestra resultado
-const botonResultado = document.getElementById("muestraResultado");
-if (botonResultado && botonResultado instanceof HTMLButtonElement) {
-  botonResultado.addEventListener("click", () => {});
+  botonDameCarta.addEventListener("click", sumaCarta);
 }
 // boton para plantarse
 const botonPlantarse = document.getElementById("Plantarse");
@@ -297,6 +296,9 @@ if (botonPlantarse && botonPlantarse instanceof HTMLButtonElement) {
 }
 //boton reset
 const botonReset = document.getElementById("Reset");
-if(botonReset && botonReset instanceof HTMLButtonElement){
-  botonReset.addEventListener ("click", ()=>{})
+if (botonReset && botonReset instanceof HTMLButtonElement) {
+  botonReset.addEventListener("click", () => {});
 }
+document.addEventListener("DOMContentLoaded", () => {
+  muestraPuntuacion(puntuacion);
+});
