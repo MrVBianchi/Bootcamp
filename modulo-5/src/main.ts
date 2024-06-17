@@ -25,55 +25,55 @@ const dameCarta = () => {
 
 // 3- funcion mostrar carta
 const mostrarCarta = (carta: number): string => {
-  let CartaActual: string = "";
+  let cartaActual: string = "";
   switch (carta) {
     case 0:
-      CartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/back.jpg`;
+      cartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/back.jpg`;
       break;
     case 1:
-      CartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/1_as-copas.jpg`;
+      cartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/1_as-copas.jpg`;
       break;
     case 2:
-      CartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/2_dos-copas.jpg`;
+      cartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/2_dos-copas.jpg`;
       break;
     case 3:
-      CartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/3_tres-copas.jpg`;
+      cartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/3_tres-copas.jpg`;
       break;
     case 4:
-      CartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/4_cuatro-copas.jpg`;
+      cartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/4_cuatro-copas.jpg`;
       break;
     case 5:
-      CartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/5_cinco-copas.jpg`;
+      cartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/5_cinco-copas.jpg`;
       break;
     case 6:
-      CartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/6_seis-copas.jpg`;
+      cartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/6_seis-copas.jpg`;
       break;
     case 7:
-      CartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/7_siete-copas.jpg`;
+      cartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/7_siete-copas.jpg`;
       break;
     case 10:
-      CartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/10_sota-copas.jpg`;
+      cartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/10_sota-copas.jpg`;
       break;
     case 11:
-      CartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/11_caballo-copas.jpg`;
+      cartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/11_caballo-copas.jpg`;
       break;
     case 12:
-      CartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/12_rey-copas.jpg`;
+      cartaActual = `https://raw.githubusercontent.com/Lemoncode/fotos-ejemplos/main/cartas/copas/12_rey-copas.jpg`;
       break;
   }
-  return CartaActual;
+  return cartaActual;
 };
 
 // cambiar src -apartado carrousel
 const cambiarScr = (carta: number) => {
   let cartaPrincipal = document.getElementById("CartaPrincipal");
-  const CartaNueva = mostrarCarta(carta);
+  const cartaNueva = mostrarCarta(carta);
   if (cartaPrincipal && cartaPrincipal instanceof HTMLImageElement)
-    cartaPrincipal.src = CartaNueva;
+    cartaPrincipal.src = cartaNueva;
 };
 
 //DAMos valor a las carta >7
-const ValorCarta = (carta: number): number => {
+const valorCarta = (carta: number): number => {
   if (carta > 7) {
     return 0.5;
   } else {
@@ -90,10 +90,23 @@ const sumaCarta = () => {
   //pedimos que cambie la src
   cambiarScr(numerocarta);
   //ahora debe sumar los valores
-  const ValordeCarta = ValorCarta(numerocarta);
-  sumaPuntuacion(ValordeCarta);
+  const valordeCarta = valorCarta(numerocarta);
+  sumaPuntuacion(valordeCarta);
   muestraPuntuacion(puntuacion);
   gestionarGameOver(puntuacion);
+  ganasteEljuego(puntuacion);
+};
+//creamos una funcion auxiliar que corte el juego con 7.5 puntos
+const ganasteEljuego = (puntuacion: number) => {
+  if (botonDameCarta instanceof HTMLButtonElement && puntuacion === 7.5) {
+    botonDameCarta.disabled = true;
+  }
+  if (botonPlantarse instanceof HTMLButtonElement && puntuacion === 7.5) {
+    botonPlantarse.disabled = true;
+  }
+  if (botonResultado instanceof HTMLButtonElement && puntuacion === 7.5) {
+    botonResultado.disabled = true;
+  }
 };
 
 // aqui vamos a hacer el apartado 4 y 5 al mismo tiempo para mostrar mensajes y posibles situaicones
@@ -106,34 +119,34 @@ const imposible = 4;
 const GAME_OVER_MAXIMO_INTENTOS = 7.5;
 
 type Estado =
-  | `Menor_Cuatro`
-  | `Num_cinco`
-  | `Seis_siete`
-  | `Siete_media`
-  | `GAME_OVER_MAXIMO_INTENTOS`
-  | `imposible`
-  | `cero`;
+  | "Menor_Cuatro"
+  | "Num_cinco"
+  | "Seis_siete"
+  | "Siete_media"
+  | "GAME_OVER_MAXIMO_INTENTOS"
+  | "imposible"
+  | "cero";
 
-const HasSuperadoPuntuacion = (): boolean =>
+const hasSuperadoPuntuacion = (): boolean =>
   puntuacion > GAME_OVER_MAXIMO_INTENTOS;
 
 const muestraMensajeComprobacion = (estado: Estado) => {
   let mensaje = "";
   switch (estado) {
     case `Menor_Cuatro`:
-      mensaje = `Has sido muy conservador`;
+      mensaje = "Has sido muy conservador";
       break;
     case `Num_cinco`:
-      mensaje = `Te ha entrado el canguelo eh?`;
+      mensaje = "Te ha entrado el canguelo eh?";
       break;
     case `Seis_siete`:
-      mensaje = `Casi casi...`;
+      mensaje = "Casi casi...";
       break;
     case `Siete_media`:
-      mensaje = `¡ Lo has clavado! ¡Enhorabuena!`;
+      mensaje = "¡ Lo has clavado! ¡Enhorabuena!";
       break;
     case `GAME_OVER_MAXIMO_INTENTOS`:
-      mensaje = `Que pringaooo!! 🎉🎉🎉`;
+      mensaje = "Que pringaooo!! 🎉🎉🎉";
       break;
 
     case `imposible`:
@@ -153,10 +166,19 @@ const muestraMensajeComprobacion = (estado: Estado) => {
 };
 // gestionamos boton game over con el boton dame carta
 const gestionarGameOver = (puntuacion: number) => {
+  if (puntuacion === 7.5) {
+    if (botonPlantarse instanceof HTMLButtonElement) {
+      botonPlantarse.disabled = true;
+    }
+    muestraMensajeComprobacion("Siete_media");
+  }
   if (puntuacion > 7.5) {
     const elementodameCarta = document.getElementById("dameCarta");
     if (elementodameCarta && elementodameCarta instanceof HTMLButtonElement) {
       elementodameCarta.disabled = true;
+    }
+    if (botonPlantarse instanceof HTMLButtonElement) {
+      botonPlantarse.disabled = true;
     }
     muestraMensajeComprobacion("GAME_OVER_MAXIMO_INTENTOS");
   }
@@ -183,11 +205,11 @@ const comprobarPuntuacion = (numero: number): Estado => {
 const muestraMensajeMePlanto = () => {
   const estado = comprobarPuntuacion(puntuacion);
   muestraMensajeComprobacion(estado);
-  if (botonResultado && botonResultado instanceof HTMLButtonElement) {
-    botonResultado.disabled = false;
-  }
   if (botonDameCarta && botonDameCarta instanceof HTMLButtonElement) {
     botonDameCarta.disabled = true;
+  }
+  if (botonResultado && botonResultado instanceof HTMLButtonElement) {
+    botonResultado.disabled = false;
   }
 };
 //funcion reset juego
@@ -203,6 +225,9 @@ const resetGame = () => {
   }
   if (botonResultado && botonResultado instanceof HTMLButtonElement) {
     botonResultado.disabled = true;
+  }
+  if (botonPlantarse instanceof HTMLButtonElement) {
+    botonPlantarse.disabled = false;
   }
 };
 //boton dame carta llama a funcion
@@ -227,5 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const botonResultado = document.getElementById("muestraResultado");
 if (botonResultado && botonResultado instanceof HTMLButtonElement) {
   botonResultado.disabled = true;
-  botonResultado.addEventListener("click", sumaCarta);
+  botonResultado.addEventListener("click", () => {
+    sumaCarta(), (botonResultado.disabled = true);
+  });
 }
