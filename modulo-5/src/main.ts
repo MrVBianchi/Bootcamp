@@ -10,12 +10,12 @@ const muestraPuntuacion = (puntuacion: number) => {
   if (elementoPuntuacion) {
     elementoPuntuacion.innerHTML = puntuacion.toString();
   }
-  console.log(puntuacion);
 };
 
 // amos a escribir la funcion para cuando el usuario pide carta
 const dameCarta = () => {
-  const generaCarta = Math.floor(Math.random() * 11);
+  const generaCarta = Math.ceil(Math.random() * 10);
+  console.log(generaCarta);
   if (generaCarta && generaCarta > 7) {
     return generaCarta + 2;
   }
@@ -73,13 +73,8 @@ const cambiarScr = (carta: number) => {
 };
 
 //DAMos valor a las carta >7
-const valorCarta = (carta: number): number => {
-  if (carta > 7) {
-    return 0.5;
-  } else {
-    return carta;
-  }
-};
+const valorCarta = (carta: number): number => (carta > 7 ? 0.5 : carta);
+
 const sumaPuntuacion = (ValorCarta: number): number => {
   return (puntuacion = puntuacion + ValorCarta);
 };
@@ -98,6 +93,14 @@ const sumaCarta = () => {
 };
 //creamos una funcion auxiliar que corte el juego con 7.5 puntos
 const ganasteEljuego = (puntuacion: number) => {
+  if (puntuacion === 7.5) {
+    apagaBoton("dameCarta");
+    apagaBoton("Plantarse");
+    apagaBoton("muestraResultado");
+  }
+};
+/*
+const ganasteEljuego = (puntuacion: number) => {
   if (botonDameCarta instanceof HTMLButtonElement && puntuacion === 7.5) {
     botonDameCarta.disabled = true;
   }
@@ -108,7 +111,7 @@ const ganasteEljuego = (puntuacion: number) => {
     botonResultado.disabled = true;
   }
 };
-
+*/
 // aqui vamos a hacer el apartado 4 y 5 al mismo tiempo para mostrar mensajes y posibles situaicones
 const Menor_Cuatro = 0;
 const Num_cinco = 1;
@@ -167,6 +170,18 @@ const muestraMensajeComprobacion = (estado: Estado) => {
 // gestionamos boton game over con el boton dame carta
 const gestionarGameOver = (puntuacion: number) => {
   if (puntuacion === 7.5) {
+    apagaBoton("Plantarse");
+    muestraMensajeComprobacion("Siete_media");
+  }
+  if (puntuacion > 7.5) {
+    apagaBoton("dameCarta");
+    apagaBoton("Plantarse");
+    muestraMensajeComprobacion("GAME_OVER_MAXIMO_INTENTOS");
+  }
+};
+/*
+const gestionarGameOver = (puntuacion: number) => {
+  if (puntuacion === 7.5) {
     if (botonPlantarse instanceof HTMLButtonElement) {
       botonPlantarse.disabled = true;
     }
@@ -183,6 +198,7 @@ const gestionarGameOver = (puntuacion: number) => {
     muestraMensajeComprobacion("GAME_OVER_MAXIMO_INTENTOS");
   }
 };
+*/
 //mesajes comprobacion
 const comprobarPuntuacion = (numero: number): Estado => {
   if (numero <= 4.5) {
@@ -191,7 +207,7 @@ const comprobarPuntuacion = (numero: number): Estado => {
   if (numero >= 5 && numero < 6) {
     return `Num_cinco`;
   }
-  if (numero === 6) {
+  if (numero >= 6 && numero < 7) {
     return `Seis_siete`;
   }
   if (numero === 7) {
@@ -205,6 +221,14 @@ const comprobarPuntuacion = (numero: number): Estado => {
 const muestraMensajeMePlanto = () => {
   const estado = comprobarPuntuacion(puntuacion);
   muestraMensajeComprobacion(estado);
+  apagaBoton("dameCarta");
+  enciendeBoton("muestraResultado");
+  apagaBoton("Plantarse");
+};
+/*
+const muestraMensajeMePlanto = () => {
+  const estado = comprobarPuntuacion(puntuacion);
+  muestraMensajeComprobacion(estado);
   if (botonDameCarta && botonDameCarta instanceof HTMLButtonElement) {
     botonDameCarta.disabled = true;
   }
@@ -212,8 +236,18 @@ const muestraMensajeMePlanto = () => {
     botonResultado.disabled = false;
   }
 };
+*/
 //funcion reset juego
-
+const resetGame = () => {
+  puntuacion = 0;
+  muestraPuntuacion(puntuacion);
+  cambiarScr(puntuacion);
+  muestraMensajeComprobacion(`cero`);
+  enciendeBoton("dameCarta");
+  apagaBoton("muestraResultado");
+  enciendeBoton("Plantarse");
+};
+/*
 const resetGame = () => {
   puntuacion = 0;
   muestraPuntuacion(puntuacion);
@@ -230,29 +264,52 @@ const resetGame = () => {
     botonPlantarse.disabled = false;
   }
 };
-//boton dame carta llama a funcion
-const botonDameCarta = document.getElementById("dameCarta");
-if (botonDameCarta && botonDameCarta instanceof HTMLButtonElement) {
-  botonDameCarta.addEventListener("click", sumaCarta);
-}
-// boton para plantarse
-const botonPlantarse = document.getElementById("Plantarse");
-if (botonPlantarse && botonPlantarse instanceof HTMLButtonElement) {
-  botonPlantarse.addEventListener("click", muestraMensajeMePlanto);
-}
-//boton reset
-const botonReset = document.getElementById("Reset");
-if (botonReset && botonReset instanceof HTMLButtonElement) {
-  botonReset.addEventListener("click", resetGame);
-}
+*/
+// crear funcion para encender y apagar un boton
+const apagaBoton = (id: string) => {
+  const elementoApagar = document.getElementById(id);
+  if (elementoApagar instanceof HTMLButtonElement) {
+    elementoApagar.disabled = true;
+  }
+};
+
+const enciendeBoton = (id: string) => {
+  const elementoEncender = document.getElementById(id);
+  if (elementoEncender instanceof HTMLButtonElement) {
+    elementoEncender.disabled = false;
+  }
+};
+//crear funcion para todos los botones
+const iniciarBotones = () => {
+  //boton dame carta llama a funcion
+  const botonDameCarta = document.getElementById("dameCarta");
+  if (botonDameCarta && botonDameCarta instanceof HTMLButtonElement) {
+    botonDameCarta.addEventListener("click", sumaCarta);
+  }
+  // boton para plantarse
+  const botonPlantarse = document.getElementById("Plantarse");
+  if (botonPlantarse && botonPlantarse instanceof HTMLButtonElement) {
+    botonPlantarse.addEventListener("click", muestraMensajeMePlanto);
+  }
+  //boton reset
+  const botonReset = document.getElementById("Reset");
+  if (botonReset && botonReset instanceof HTMLButtonElement) {
+    botonReset.addEventListener("click", resetGame);
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    muestraPuntuacion(puntuacion);
+  });
+  // boton muestra resultado para mostrar una carta una vez terminada
+  const botonResultado = document.getElementById("muestraResultado");
+  if (botonResultado && botonResultado instanceof HTMLButtonElement) {
+    botonResultado.disabled = true;
+    botonResultado.addEventListener("click", () => {
+      sumaCarta(), (botonResultado.disabled = true);
+    });
+  }
+};
+//
 document.addEventListener("DOMContentLoaded", () => {
   muestraPuntuacion(puntuacion);
+  iniciarBotones();
 });
-// boton muestra resultado para mostrar una carta una vez terminada
-const botonResultado = document.getElementById("muestraResultado");
-if (botonResultado && botonResultado instanceof HTMLButtonElement) {
-  botonResultado.disabled = true;
-  botonResultado.addEventListener("click", () => {
-    sumaCarta(), (botonResultado.disabled = true);
-  });
-}
