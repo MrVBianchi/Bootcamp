@@ -3,18 +3,16 @@
 // esta es la variable de la puntuacion
 
 const SIETE_Y_MEDIA = 7.5;
-type NumeroPartida =
-  | "Menor_Cuatro"
-  | "Num_cinco"
-  | "Seis_siete"
-  | "Siete_media"
-  | "GAME_OVER_MAXIMO_INTENTOS"
-  | "imposible"
-  | "cero";
-type Estado = "Jugando" | "Plantado" | "Ganado" | "Perdido";
+type EstadosPartida =
+  | "Jugando"
+  | "Plantado_Menor_Cuatro"
+  | "Plantado_Menor_Cinco"
+  | "Plantado_Seis_siete"
+  | "Ganado"
+  | "Perdido";
 
 let puntuacion = 0;
-let estadoPartida: Estado = "Jugando";
+let estadoPartida: EstadosPartida = "Jugando";
 //let mensajePartida = "";
 // crear funcion para encender y apagar un boton
 const apagaBoton = (id: string) => {
@@ -110,44 +108,44 @@ const ganasteEljuego = (puntuacion: number) => {
     apagaBoton("dameCarta");
     apagaBoton("Plantarse");
     apagaBoton("muestraResultado");
-    muestraMensajeComprobacion("Siete_media");
+    muestraMensajeComprobacion("Ganado");
   }
 };
 
 const hasSuperadoPuntuacion = (): boolean => puntuacion > SIETE_Y_MEDIA;
 
-const muestraMensajeComprobacion = (estado: NumeroPartida) => {
+const mensajeComprobacion = (estado: EstadosPartida) => {
   let mensaje = "";
   switch (estado) {
-    case "Menor_Cuatro":
+    case "Jugando":
+      mensaje = "";
+      break;
+    case "Plantado_Menor_Cuatro":
       mensaje = "Has sido muy conservador";
       break;
-    case "Num_cinco":
+    case "Plantado_Menor_Cinco":
       mensaje = "Te ha entrado el canguelo eh?";
       break;
-    case "Seis_siete":
+    case "Plantado_Seis_siete":
       mensaje = "Casi casi...";
       break;
-    case "Siete_media":
+    case "Ganado":
       mensaje = "¡ Lo has clavado! ¡Enhorabuena!";
       break;
-    case "GAME_OVER_MAXIMO_INTENTOS":
+    case "Perdido":
       mensaje = "Que pringaooo!! 🎉🎉🎉";
       break;
 
-    case "imposible":
-      mensaje = "No se que ha pasado, pero no deberías estar aquí";
-      break;
-    case "cero":
-      mensaje = "";
-      break;
     default:
       mensaje = "No se que ha pasado, pero no deberías estar aquí";
       break;
   }
+  return mensaje;
+};
+const muestraMensajeComprobacion = (estadoPartida: EstadosPartida) => {
   const elementoResultado = document.getElementById("resultado");
   if (elementoResultado) {
-    elementoResultado.innerHTML = mensaje;
+    elementoResultado.innerHTML = mensajeComprobacion(estadoPartida);
   }
 };
 // gestionamos boton game over con el boton dame carta
@@ -155,22 +153,23 @@ const gestionarGameOver = (puntuacion: number) => {
   if (puntuacion > SIETE_Y_MEDIA) {
     apagaBoton("dameCarta");
     apagaBoton("Plantarse");
-    muestraMensajeComprobacion("GAME_OVER_MAXIMO_INTENTOS");
+
+    estadoPartida = "Perdido";
+    muestraMensajeComprobacion(estadoPartida);
   }
 };
 
 //mesajes comprobacion
-const comprobarPuntuacion = (numero: number): NumeroPartida => {
+const comprobarPuntuacion = (numero: number) => {
   if (numero <= 4.5) {
-    return "Menor_Cuatro";
+    estadoPartida = "Plantado_Menor_Cuatro";
   }
   if (numero >= 5 && numero < 6) {
-    return "Num_cinco";
+    estadoPartida = "Plantado_Menor_Cinco";
   }
   if (numero >= 6 && numero <= 7) {
-    return "Seis_siete";
+    estadoPartida = "Plantado_Seis_siete";
   }
-  return "imposible";
 };
 //funcion que convoque todas las funciones individuales
 const sumaCarta = () => {
@@ -187,8 +186,8 @@ const sumaCarta = () => {
 };
 
 const mePlanto = () => {
-  const estado = comprobarPuntuacion(puntuacion);
-  muestraMensajeComprobacion(estado);
+  comprobarPuntuacion(puntuacion);
+  muestraMensajeComprobacion(estadoPartida);
   apagaBoton("dameCarta");
   enciendeBoton("muestraResultado");
   apagaBoton("Plantarse");
@@ -199,7 +198,8 @@ const resetGame = () => {
   puntuacion = 0;
   muestraPuntuacion(puntuacion);
   cambiarScr(puntuacion);
-  muestraMensajeComprobacion("cero");
+  estadoPartida = "Jugando";
+  muestraMensajeComprobacion(estadoPartida);
   enciendeBoton("dameCarta");
   apagaBoton("muestraResultado");
   enciendeBoton("Plantarse");
