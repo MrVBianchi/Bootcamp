@@ -1,7 +1,3 @@
-// Juego 7 1/2
-
-// esta es la variable de la puntuacion
-
 const SIETE_Y_MEDIA = 7.5;
 type EstadosPartida =
   | "Jugando"
@@ -13,7 +9,7 @@ type EstadosPartida =
 
 let puntuacion = 0;
 let estadoPartida: EstadosPartida = "Jugando";
-//let mensajePartida = "";
+
 // crear funcion para encender y apagar un boton
 const apagaBoton = (id: string) => {
   const elementoApagar = document.getElementById(id);
@@ -45,6 +41,8 @@ const dameCarta = () => {
 
   return generaCarta;
 };
+//DAMos valor a las carta >7
+const valorCarta = (carta: number): number => (carta > 7 ? 0.5 : carta);
 
 // 3- funcion mostrar carta
 const mostrarCarta = (carta: number): string => {
@@ -95,13 +93,21 @@ const cambiarScr = (carta: number) => {
     cartaPrincipal.src = cartaNueva;
 };
 
-//DAMos valor a las carta >7
-const valorCarta = (carta: number): number => (carta > 7 ? 0.5 : carta);
-
 const sumaPuntuacion = (ValorCarta: number): number => {
   return (puntuacion = puntuacion + ValorCarta);
 };
-
+//mesajes comprobacion
+const comprobarPuntuacion = (numero: number) => {
+  if (numero <= 4.5) {
+    estadoPartida = "Plantado_Menor_Cuatro";
+  }
+  if (numero >= 5 && numero < 6) {
+    estadoPartida = "Plantado_Menor_Cinco";
+  }
+  if (numero >= 6 && numero <= 7) {
+    estadoPartida = "Plantado_Seis_siete";
+  }
+};
 //creamos una funcion auxiliar que corte el juego con 7.5 puntos
 const ganasteEljuego = (puntuacion: number) => {
   if (puntuacion === SIETE_Y_MEDIA) {
@@ -159,18 +165,6 @@ const gestionarGameOver = (puntuacion: number) => {
   }
 };
 
-//mesajes comprobacion
-const comprobarPuntuacion = (numero: number) => {
-  if (numero <= 4.5) {
-    estadoPartida = "Plantado_Menor_Cuatro";
-  }
-  if (numero >= 5 && numero < 6) {
-    estadoPartida = "Plantado_Menor_Cinco";
-  }
-  if (numero >= 6 && numero <= 7) {
-    estadoPartida = "Plantado_Seis_siete";
-  }
-};
 //funcion que convoque todas las funciones individuales
 const sumaCarta = () => {
   // primero pedimos carta
