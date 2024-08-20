@@ -4,7 +4,7 @@ import { vi } from "vitest";
 
 describe("comprobarPuntuacion", () => {
   // vamos a crear la bateria de tests con respecto de los casos que existen en la funcion principal
-
+  //Este apartado será comrpobado varias veces
   // plantado_menor_cuatro ; numero <= 4.5
   it("Debe de devolver Plantado_Menor_Cuatro cuando el numero o puntuacion <= 4.5", () => {
     //Arrange
