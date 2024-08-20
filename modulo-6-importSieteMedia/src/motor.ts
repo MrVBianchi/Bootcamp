@@ -1,4 +1,4 @@
-import { partida } from "./modelo";
+import { EstadosPartida, partida } from "./modelo";
 
 export const dameCarta = () => {
   const generaCarta = Math.ceil(Math.random() * 10);
@@ -65,4 +65,33 @@ export const comprobarPuntuacion = (numero: number) => {
   if (numero >= 6 && numero <= 7) {
     partida.estadoPartida = "Plantado_Seis_siete";
   }
+};
+
+export const mensajeComprobacion = (estado: EstadosPartida) => {
+  let mensaje = "";
+  switch (estado) {
+    case "Jugando":
+      mensaje = "";
+      break;
+    case "Plantado_Menor_Cuatro":
+      mensaje = "Has sido muy conservador";
+      break;
+    case "Plantado_Menor_Cinco":
+      mensaje = "Te ha entrado el canguelo eh?";
+      break;
+    case "Plantado_Seis_siete":
+      mensaje = "Casi casi...";
+      break;
+    case "Ganado":
+      mensaje = "¡ Lo has clavado! ¡Enhorabuena!";
+      break;
+    case "Perdido":
+      mensaje = "Que pringaooo!! 🎉🎉🎉";
+      break;
+
+    default:
+      mensaje = "No se que ha pasado, pero no deberías estar aquí";
+      break;
+  }
+  return mensaje;
 };
