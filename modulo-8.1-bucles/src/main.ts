@@ -68,7 +68,7 @@ const pacientes: Pacientes[] = [
     apellidos: "Kid",
     sexo: "Male",
     temperatura: 39.8,
-    frecuenciaCardiaca: 80,
+    frecuenciaCardiaca: 101,
     especialidad: "Pediatra",
     edad: 11,
   },
@@ -120,10 +120,7 @@ const activarProtocoloUrgencia = (pacientes: Pacientes[]): boolean => {
   }
   return activarProctolo;
 };
-console.log(
-  activarProtocoloUrgencia(pacientes),
-  "Protocolo de Emergencia inactivo"
-);
+console.log(activarProtocoloUrgencia(pacientes), "Protocolo de Emergencia");
 
 // apartado 3, reasignacion de pediatria a medico de familia
 
@@ -135,28 +132,28 @@ const reasignaPacientesAMedicoFamilia = (
 
   for (let i = 0; i < pacientes.length; i++) {
     if (pacientesActualizados[i].especialidad === "Pediatra") {
-      pacientesActualizados[i].especialidad = "Medico de familia";
+      pacientesActualizados[i] = {
+        ...pacientesActualizados[i],
+        especialidad: "Medico de familia",
+      };
     }
   }
   return pacientesActualizados;
 };
 console.log(reasignaPacientesAMedicoFamilia(pacientes));
-
+console.log(pacientes);
 // apartado 4, queremos ver si podemos mandar al pediatra a casa, revisamos pacientes
 const HayPacientesDePediatria = (pacientes: Pacientes[]): boolean => {
   // Comprobamos que en toda la lista no hay pediatria, entonces activamos el pediatraPuedeIrse
-  let elPediatraPuedeIrse = false;
+  let elPediatraTienePacientes = false;
   for (let i = 0; i < pacientes.length; i++) {
-    if (pacientes[i].especialidad != "Pediatra") {
-      elPediatraPuedeIrse = true;
+    if (pacientes[i].especialidad !== "Pediatra") {
+      elPediatraTienePacientes = true;
     }
   }
-  return elPediatraPuedeIrse;
+  return elPediatraTienePacientes;
 };
-console.log(
-  HayPacientesDePediatria(pacientes),
-  "El pediatra no tiene más pacientes, puede irse a descansar"
-);
+console.log("¿Hay pacientes en pediatría?", HayPacientesDePediatria(pacientes));
 
 // Apartado 5 opcional, queremos ver cuantos pacientes hay en la especialidad de Medico de familia
 interface NumeroPacientesPorEspecialidad {
