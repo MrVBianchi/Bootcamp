@@ -165,23 +165,27 @@ interface NumeroPacientesPorEspecialidad {
 const cuentaPacientesPorEspecialidad = (
   pacientes: Pacientes[]
 ): NumeroPacientesPorEspecialidad => {
-  // creamos 3 let para los totales
+  // creamos un objeto para los totales
   let totalPacientesMedicoDeFamilia = 0;
   let totalPacientesPediatria = 0;
   let totalPacientesCardiologia = 0;
-  // creamos 3 if, porque soy un cagao y me da miedo ponerlo en uno solo y compilar
+  // usamos switch para contar los pacientes por especialidad
   for (let i = 0; i < pacientes.length; i++) {
-    if (pacientes[i].especialidad === "Medico de familia") {
-      totalPacientesMedicoDeFamilia++;
-    }
-    if (pacientes[i].especialidad === "Pediatra") {
-      totalPacientesPediatria++;
-    }
-    if (pacientes[i].especialidad === "Cardiólogo") {
-      totalPacientesCardiologia++;
+    switch (pacientes[i].especialidad) {
+      case "Medico de familia":
+        totalPacientesMedicoDeFamilia++;
+        break;
+      case "Pediatra":
+        totalPacientesPediatria++;
+        break;
+      case "Cardiólogo":
+        totalPacientesCardiologia++;
+        break;
+      default:
+        throw new Error("Ha ocurrido algo, no deberías estar aquí");
     }
   }
-  // nos tienes que devolver los valores para la interface
+  // devolvemos los valores para la interface
   return {
     medicoDeFamilia: totalPacientesMedicoDeFamilia,
     pediatria: totalPacientesPediatria,
