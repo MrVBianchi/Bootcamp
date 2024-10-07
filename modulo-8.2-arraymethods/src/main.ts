@@ -138,11 +138,11 @@ const totalPacientesPorEspecialidad = (
   ).length;
 
 const cuentaPacientesPorEspecialidad = (
-  x: Pacientes[]
+  paciente: Pacientes[]
 ): NumeroPacientesPorEspecialidad => ({
-  medicoDeFamilia: totalPacientesPorEspecialidad("Medico de familia", x),
-  pediatria: totalPacientesPorEspecialidad("Pediatra", x),
-  cardiologia: totalPacientesPorEspecialidad("Cardiólogo", x),
+  medicoDeFamilia: totalPacientesPorEspecialidad("Medico de familia", paciente),
+  pediatria: totalPacientesPorEspecialidad("Pediatra", paciente),
+  cardiologia: totalPacientesPorEspecialidad("Cardiólogo", paciente),
 });
 
 console.log(cuentaPacientesPorEspecialidad(pacientes));
