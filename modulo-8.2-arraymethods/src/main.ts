@@ -150,14 +150,16 @@ console.log(cuentaPacientesPorEspecialidad(pacientes));
 const pacientesPorEspecialidad2 = (pacientes: Pacientes[]) =>
   pacientes.reduce(
     (acc, paciente: Pacientes) => {
-      if (paciente.especialidad === "Pediatra") {
-        acc.pediatria++;
-      }
-      if (paciente.especialidad === "Medico de familia") {
-        acc.medicoDeFamilia++;
-      }
-      if (paciente.especialidad === "Cardiólogo") {
-        acc.cardiologia++;
+      switch (paciente.especialidad) {
+        case "Pediatra":
+          acc.pediatria++;
+          break;
+        case "Medico de familia":
+          acc.medicoDeFamilia++;
+          break;
+        case "Cardiólogo":
+          acc.cardiologia++;
+          break;
       }
       return acc;
     },
